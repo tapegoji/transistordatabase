@@ -129,26 +129,39 @@ def template_example(database, path):
     e_on = {}
     if hasattr(transistor_loaded.switch, 'e_on'):
         for i in range(len(transistor_loaded.switch.e_on)):
-            t_j = transistor_loaded.switch.e_on[i].t_j
-            v_g = transistor_loaded.switch.e_on[i].v_g
-            v_supply = transistor_loaded.switch.e_on[i].v_supply
-            r_g = transistor_loaded.switch.e_on[i].r_g
-            e_on[f"e_on_{t_j}_{v_supply}"] = {"dataset_type": "graph_i_e",
-                                                    "t_j": t_j,
-                                                    'v_g': v_g,
-                                                    'v_supply': v_supply,
-                                                    'r_g': r_g,
-                                                    "graph_i_e": transistor_loaded.switch.e_on[i].graph_i_e}
+            legend_dict = {**{key: value for key, value in transistor_loaded.switch.e_on[i].__dict__.items()}}
+            if 't_j' in legend_dict and 'r_g' in legend_dict:
+                name1 = int(legend_dict['t_j'])
+                name2 = float(legend_dict['r_g'])
+            elif 't_j' in legend_dict and 'i_channel' in legend_dict:
+                name1 = int(legend_dict['t_j'])
+                name2 = int(legend_dict['i_channel'])
+            elif 'r_g' in legend_dict and 'i_channel' in legend_dict:
+                name1 = float(legend_dict['r_g'])
+                name2 = int(legend_dict['i_channel'])
+            name3 = int(legend_dict['v_supply'])
+            name4 = int(legend_dict['v_g'])
+            name = "eon_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
+            e_on[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
+                                               "graph_i_e": transistor_loaded.switch.e_on[i].graph_i_e}
     for file in os.listdir(path):
         if file.startswith("switch_switching_eon_") and file.endswith(".csv"):
             legend_info = file.replace('switch_switching_eon_', '').replace('.csv', '').split("_")
             legend_dict = tdb.get_legend_info(legend_info)
-            # r_g = tdb.res_to_numeric(file.split("_")[3])
-            # v_supply = int(tdb.volt_to_numeric(file.split("_")[4]))
-            # t_j = int(tdb.temp_to_numeric(file.split("_")[5]))
-            # v_g = int(tdb.volt_to_numeric(file.split("_")[6]))
-            if f"e_on_{t_j}_{v_supply}" not in e_on:
-                e_on[f"e_on_{legend_dict['t_j']}_{legend_dict['v_supply']}"] = {"dataset_type": "graph_i_e",
+            if 't_j' in legend_dict and 'r_g' in legend_dict:
+                name1 = int(legend_dict['t_j'])
+                name2 = float(legend_dict['r_g'])
+            elif 't_j' in legend_dict and 'i_channel' in legend_dict:
+                name1 = int(legend_dict['t_j'])
+                name2 = int(legend_dict['i_channel'])
+            else:
+                name1 = float(legend_dict['r_g'])
+                name2 = int(legend_dict['i_channel'])
+            name3 = int(legend_dict['v_supply'])
+            name4 = int(legend_dict['v_g'])
+            name = "eon_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
+            if name not in e_on:
+                e_on[f"{name}"] = {"dataset_type": "graph_i_e",
                                                                         **{key: value for key, value in legend_dict.items()},
                                                                         "graph_i_e": tdb.csv2array(f'{path}/{file}')}
     ''' previous code
@@ -168,24 +181,44 @@ def template_example(database, path):
     e_off = {}
     if hasattr(transistor_loaded.switch, 'e_off'):
         for i in range(len(transistor_loaded.switch.e_off)):
-            t_j = transistor_loaded.switch.e_off[i].t_j
-            v_g = transistor_loaded.switch.e_off[i].v_g
-            v_supply = transistor_loaded.switch.e_off[i].v_supply
-            r_g = transistor_loaded.switch.e_off[i].r_g
-            e_off[f"e_off_{t_j}_{v_supply}"] = {"dataset_type": "graph_i_e",
-                                                 "t_j": t_j,
-                                                 'v_g': v_g,
-                                                 'v_supply': v_supply,
-                                                 'r_g': r_g,
-                                                 "graph_i_e": transistor_loaded.switch.e_off[i].graph_i_e}
+            legend_dict = {**{key: value for key, value in transistor_loaded.switch.e_off[i].__dict__.items()}
+                            }
+            if 't_j' in legend_dict and 'r_g' in legend_dict:
+                name1 = int(legend_dict['t_j'])
+                name2 = float(legend_dict['r_g'])
+            elif 't_j' in legend_dict and 'i_channel' in legend_dict:
+                name1 = int(legend_dict['t_j'])
+                name2 = int(legend_dict['i_channel'])
+            elif 'r_g' in legend_dict and 'i_channel' in legend_dict:
+                name1 = float(legend_dict['r_g'])
+                name2 = int(legend_dict['i_channel'])
+            name3 = int(legend_dict['v_supply'])
+            name4 = int(legend_dict['v_g'])
+            name = "eoff_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
+            e_off[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
+                                               "graph_i_e": transistor_loaded.switch.e_off[i].graph_i_e}
     for file in os.listdir(path):
         if file.startswith("switch_switching_eoff_") and file.endswith(".csv"):
             legend_info = file.replace('switch_switching_eoff_', '').replace('.csv', '').split("_")
             legend_dict = tdb.get_legend_info(legend_info)
-            if f"e_off_{t_j}_{v_supply}" not in e_off:
-                e_off[f"e_off_{t_j}_{v_supply}"] = {"dataset_type": "graph_i_e",
-                                                    **{key: value for key, value in legend_dict.items()},
-                                                    "graph_i_e": tdb.csv2array(f'{path}/{file}')}
+            if 't_j' in legend_dict and 'r_g' in legend_dict:
+                name1 = int(legend_dict['t_j'])
+                name2 = float(legend_dict['r_g'])
+                legend_dict['dataset_type'] = 'graph_i_e'
+            elif 't_j' in legend_dict and 'i_channel' in legend_dict:
+                name1 = int(legend_dict['t_j'])
+                name2 = int(legend_dict['i_channel'])
+                legend_dict['dataset_type'] = 'graph_r_e'
+            else:
+                name1 = float(legend_dict['r_g'])
+                name2 = int(legend_dict['i_channel'])
+                legend_dict['dataset_type'] = 'graph_t_e'
+            name3 = int(legend_dict['v_supply'])
+            name4 = int(legend_dict['v_g'])
+            name = "eoff_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
+            if name not in e_off:
+                e_off[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
+                                        "graph_i_e": tdb.csv2array(f'{path}/{file}')}
     ''' previous code
     e_off_25_600 = {"dataset_type": "graph_i_e",
                     "t_j": 25,

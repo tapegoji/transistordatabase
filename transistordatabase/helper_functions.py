@@ -836,22 +836,22 @@ def volt_to_numeric(volt_str: str) -> float:
     :rtype: float
     """ 
     if volt_str.endswith('pV'):
-            volt_str = float(re.sub(r'\D', '', volt_str)) * 1e-12
+            volt_str = float(re.sub(r'[^\d.-]', '', volt_str)) * 1e-12
     elif volt_str.endswith('nV'):
-        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e-9
+        volt_str = float(re.sub(r'[^\d.-]', '', volt_str)) * 1e-9
     elif volt_str.endswith('uV') or volt_str.endswith('µV'):
-        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e-6
+        volt_str = float(re.sub(r'[^\d.-]', '', volt_str)) * 1e-6
     elif volt_str.endswith('mV'):
-        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e-3
+        volt_str = float(re.sub(r'[^\d.-]', '', volt_str)) * 1e-3
     elif volt_str.endswith('kV'):
-        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e3
+        volt_str = float(re.sub(r'[^\d.-]', '', volt_str)) * 1e3
     elif volt_str.endswith('MV'):
-        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e6
+        volt_str = float(re.sub(r'[^\d.-]', '', volt_str)) * 1e6
     elif volt_str.endswith('GV'):
-        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e9
+        volt_str = float(re.sub(r'[^\d.-]', '', volt_str)) * 1e9
     elif volt_str.endswith('V'):
-        volt_str = float(re.sub(r'\D', '', volt_str))
-    elif re.sub(r'\D', '', volt_str) == volt_str:  # there is no unit
+        volt_str = float(re.sub(r'[^\d.-]', '', volt_str))
+    elif re.sub(r'[^\d.-]', '', volt_str) == volt_str:  # there is no unit
         volt_str = float(volt_str)
     else:
         try:
@@ -903,21 +903,21 @@ def res_to_numeric(resistance_str: str) -> float:
     """
     if resistance_str.endswith('pΩ') or resistance_str.endswith('pOhm'):
         # remvoe character and convert to float
-        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e-12 
+        resistance_str = float(re.sub(r'[^\d.]', '', resistance_str)) * 1e-12 
     elif resistance_str.endswith('nΩ') or resistance_str.endswith('nOhm'):
-        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e-9
+        resistance_str = float(re.sub(r'[^\d.]', '', resistance_str)) * 1e-9
     elif resistance_str.endswith('uΩ') or resistance_str.endswith('µΩ') or resistance_str.endswith('uOhm') or resistance_str.endswith('µOhm'):
-        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e-6
+        resistance_str = float(re.sub(r'[^\d.]', '', resistance_str)) * 1e-6
     elif resistance_str.endswith('mΩ') or resistance_str.endswith('mOhm'):
-        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e-3
+        resistance_str = float(re.sub(r'[^\d.]', '', resistance_str)) * 1e-3
     elif resistance_str.endswith('kΩ') or resistance_str.endswith('kOhm'):
-        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e3
+        resistance_str = float(re.sub(r'[^\d.]', '', resistance_str)) * 1e3
     elif resistance_str.endswith('MΩ') or resistance_str.endswith('MOhm'):
-        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e6
+        resistance_str = float(re.sub(r'[^\d.]', '', resistance_str)) * 1e6
     elif resistance_str.endswith('GΩ') or resistance_str.endswith('GOhm'):
-        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e9
+        resistance_str = float(re.sub(r'[^\d.]', '', resistance_str)) * 1e9
     elif resistance_str.endswith('Ω') or resistance_str.endswith('Ohm'):
-        resistance_str = float(re.sub(r'\D', '', resistance_str))
+        resistance_str = float(re.sub(r'[^\d.]', '', resistance_str))
     else:
         raise ValueError(f"Unknown resistance unit: {resistance_str}")
     
@@ -942,7 +942,7 @@ def get_legend_info(legend_info: list) -> dict:
             else:
                 ret_dict['v_supply'] = V
         elif 'Ohm' in legend_info[i]:
-            ret_dict['r_g'] = int(res_to_numeric(legend_info[i]))
+            ret_dict['r_g'] = float(res_to_numeric(legend_info[i]))
         elif 'deg' in legend_info[i]:
             ret_dict['t_j'] = int(temp_to_numeric(legend_info[i]))
         elif 'A' in legend_info[i]:
