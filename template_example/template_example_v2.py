@@ -136,12 +136,12 @@ def template_example(database, path):
     #         if 't_j' in legend_dict and 'r_g' in legend_dict:
     #             name1 = int(legend_dict['t_j'])
     #             name2 = float(legend_dict['r_g'])
-    #         elif 't_j' in legend_dict and 'i_channel' in legend_dict:
+    #         elif 't_j' in legend_dict and 'i_x' in legend_dict:
     #             name1 = int(legend_dict['t_j'])
-    #             name2 = int(legend_dict['i_channel'])
-    #         elif 'r_g' in legend_dict and 'i_channel' in legend_dict:
+    #             name2 = int(legend_dict['i_x'])
+    #         elif 'r_g' in legend_dict and 'i_x' in legend_dict:
     #             name1 = float(legend_dict['r_g'])
-    #             name2 = int(legend_dict['i_channel'])
+    #             name2 = int(legend_dict['i_x'])
     #         name3 = int(legend_dict['v_supply'])
     #         name4 = int(legend_dict['v_g'])
     #         name = "eon_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
@@ -155,13 +155,13 @@ def template_example(database, path):
                 name1 = int(legend_dict['t_j'])
                 name2 = float(legend_dict['r_g'])
                 legend_dict['dataset_type'] = 'graph_i_e'
-            elif 't_j' in legend_dict and 'i_channel' in legend_dict:
+            elif 't_j' in legend_dict and 'i_x' in legend_dict:
                 name1 = int(legend_dict['t_j'])
-                name2 = int(legend_dict['i_channel'])
+                name2 = int(legend_dict['i_x'])
                 legend_dict['dataset_type'] = 'graph_r_e'
             else:
                 name1 = float(legend_dict['r_g'])
-                name2 = int(legend_dict['i_channel'])
+                name2 = int(legend_dict['i_x'])
                 legend_dict['dataset_type'] = 'graph_t_e'
             name3 = int(legend_dict['v_supply'])
             name4 = int(legend_dict['v_g'])
@@ -191,12 +191,12 @@ def template_example(database, path):
     #         if 't_j' in legend_dict and 'r_g' in legend_dict:
     #             name1 = int(legend_dict['t_j'])
     #             name2 = float(legend_dict['r_g'])
-    #         elif 't_j' in legend_dict and 'i_channel' in legend_dict:
+    #         elif 't_j' in legend_dict and 'i_x' in legend_dict:
     #             name1 = int(legend_dict['t_j'])
-    #             name2 = int(legend_dict['i_channel'])
-    #         elif 'r_g' in legend_dict and 'i_channel' in legend_dict:
+    #             name2 = int(legend_dict['i_x'])
+    #         elif 'r_g' in legend_dict and 'i_x' in legend_dict:
     #             name1 = float(legend_dict['r_g'])
-    #             name2 = int(legend_dict['i_channel'])
+    #             name2 = int(legend_dict['i_x'])
     #         name3 = int(legend_dict['v_supply'])
     #         name4 = int(legend_dict['v_g'])
     #         name = "eoff_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
@@ -210,13 +210,13 @@ def template_example(database, path):
                 name1 = int(legend_dict['t_j'])
                 name2 = float(legend_dict['r_g'])
                 legend_dict['dataset_type'] = 'graph_i_e'
-            elif 't_j' in legend_dict and 'i_channel' in legend_dict:
+            elif 't_j' in legend_dict and 'i_x' in legend_dict:
                 name1 = int(legend_dict['t_j'])
-                name2 = int(legend_dict['i_channel'])
+                name2 = int(legend_dict['i_x'])
                 legend_dict['dataset_type'] = 'graph_r_e'
             else:
                 name1 = float(legend_dict['r_g'])
-                name2 = int(legend_dict['i_channel'])
+                name2 = int(legend_dict['i_x'])
                 legend_dict['dataset_type'] = 'graph_t_e'
             name3 = int(legend_dict['v_supply'])
             name4 = int(legend_dict['v_g'])

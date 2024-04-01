@@ -96,9 +96,9 @@ def isvalid_dict(dataset_dict: Dict, dict_type: str) -> bool:
             'numeric_keys': {'t_j', 'v_supply', 'v_g', 'e_x', 'r_g', 'i_x'},
             'array_keys': {}},
         'SwitchEnergyData_graph_r_e': {
-            'mandatory_keys': {'t_j', 'v_supply', 'v_g', 'graph_r_e', 'i_channel'},
+            'mandatory_keys': {'t_j', 'v_supply', 'v_g', 'graph_r_e', 'i_x'},
             'str_keys': {},
-            'numeric_keys': {'t_j', 'v_supply', 'v_g', 'i_channel'},
+            'numeric_keys': {'t_j', 'v_supply', 'v_g', 'i_x'},
             'array_keys': {'graph_r_e'}},
         'SwitchEnergyData_graph_i_e': {
             'mandatory_keys': {'t_j', 'v_supply', 'v_g', 'graph_i_e', 'r_g'},
@@ -106,9 +106,9 @@ def isvalid_dict(dataset_dict: Dict, dict_type: str) -> bool:
             'numeric_keys': {'t_j', 'v_supply', 'v_g', 'r_g'},
             'array_keys': {'graph_i_e'}},
         'SwitchEnergyData_graph_t_e': {
-            'mandatory_keys': {'v_supply', 'v_g', 'graph_t_e', 'r_g', 'i_channel'},
+            'mandatory_keys': {'v_supply', 'v_g', 'graph_t_e', 'r_g', 'i_x'},
             'str_keys': {},
-            'numeric_keys': {'v_supply', 'v_g', 'r_g', 'i_channel'},
+            'numeric_keys': {'v_supply', 'v_g', 'r_g', 'i_x'},
             'array_keys': {'graph_t_e'}},
         'VoltageDependentCapacitance': {
             'mandatory_keys': {'t_j', 'graph_v_c'},
@@ -957,7 +957,7 @@ def get_legend_info(legend_info: list) -> dict:
         elif 'deg' in legend_info[i]:
             ret_dict['t_j'] = int(temp_to_numeric(legend_info[i]))
         elif 'A' in legend_info[i]:
-            ret_dict['i_channel'] = int(current_to_numeric(legend_info[i]))
+            ret_dict['i_x'] = int(current_to_numeric(legend_info[i]))
         elif 's' in legend_info[i]:
             ret_dict['time_pulse'] = time_to_numeric(legend_info[i])
     return ret_dict

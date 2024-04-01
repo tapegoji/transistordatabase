@@ -306,13 +306,13 @@ class SwitchEnergyData:
         elif self.dataset_type == 'graph_r_e':
             self.e_x = None
             self.r_g = None
-            self.i_x = args.get('i_channel')
+            self.i_x = args.get('i_x')
             self.graph_i_e = None
             self.graph_r_e = args.get('graph_r_e')
         elif self.dataset_type == 'graph_t_e':
             self.e_x = None
             self.r_g = args.get('r_g')
-            self.i_x = args.get('i_channel')
+            self.i_x = args.get('i_x')
             self.t_j = None
             self.graph_i_e = None
             self.graph_r_e = None
