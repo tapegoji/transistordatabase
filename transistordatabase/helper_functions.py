@@ -96,15 +96,20 @@ def isvalid_dict(dataset_dict: Dict, dict_type: str) -> bool:
             'numeric_keys': {'t_j', 'v_supply', 'v_g', 'e_x', 'r_g', 'i_x'},
             'array_keys': {}},
         'SwitchEnergyData_graph_r_e': {
-            'mandatory_keys': {'t_j', 'v_supply', 'v_g', 'graph_r_e', 'i_x'},
+            'mandatory_keys': {'t_j', 'v_supply', 'v_g', 'graph_r_e', 'i_channel'},
             'str_keys': {},
-            'numeric_keys': {'t_j', 'v_supply', 'v_g', 'i_x'},
+            'numeric_keys': {'t_j', 'v_supply', 'v_g', 'i_channel'},
             'array_keys': {'graph_r_e'}},
         'SwitchEnergyData_graph_i_e': {
             'mandatory_keys': {'t_j', 'v_supply', 'v_g', 'graph_i_e', 'r_g'},
             'str_keys': {},
             'numeric_keys': {'t_j', 'v_supply', 'v_g', 'r_g'},
             'array_keys': {'graph_i_e'}},
+        'SwitchEnergyData_graph_t_e': {
+            'mandatory_keys': {'v_supply', 'v_g', 'graph_t_e', 'r_g', 'i_channel'},
+            'str_keys': {},
+            'numeric_keys': {'v_supply', 'v_g', 'r_g', 'i_channel'},
+            'array_keys': {'graph_t_e'}},
         'VoltageDependentCapacitance': {
             'mandatory_keys': {'t_j', 'graph_v_c'},
             'str_keys': {},
@@ -180,7 +185,7 @@ def isvalid_dict(dataset_dict: Dict, dict_type: str) -> bool:
                                 name, dataset_value, name, alphanum_values, module_file_path))
 
     if dict_type == 'SwitchEnergyData':
-        if dataset_dict.get('dataset_type') not in ['single', 'graph_r_e', 'graph_i_e']:
+        if dataset_dict.get('dataset_type') not in ['single', 'graph_r_e', 'graph_i_e', 'graph_t_e']:
             raise KeyError("Dictionary does not contain 'dataset_type' key necessary for SwitchEnergyData object "
                            "creation. 'dataset_type' must be 'single', 'graph_r_e' or 'graph_i_e'. "
                            "Check SwitchEnergyData class for further information.")
@@ -190,6 +195,8 @@ def isvalid_dict(dataset_dict: Dict, dict_type: str) -> bool:
             dict_type = 'SwitchEnergyData_graph_r_e'
         if dataset_dict['dataset_type'] == 'graph_i_e':
             dict_type = 'SwitchEnergyData_graph_i_e'
+        if dataset_dict['dataset_type'] == 'graph_t_e':
+            dict_type = 'SwitchEnergyData_graph_t_e'
 
     if dict_type == 'FosterThermalModel':
         given_parameters = [p for p in ['r_th_vector', 'c_th_vector', 'tau_vector']
@@ -228,6 +235,10 @@ def isvalid_dict(dataset_dict: Dict, dict_type: str) -> bool:
     array_keys = instructions[dict_type]['array_keys']
 
     # Check if all mandatory keys are contained in the dict and none of the mandatory values is 'None'.
+    for mandatory_key in mandatory_keys:
+        if dataset_dict.get(mandatory_key) is None:
+            raise KeyError(f"Argument dictionary does not contain all keys necessary for {dict_type} object creation. "
+                           f"Mandatory keys: {mandatory_keys}")
     if any([dataset_dict.get(mandatory_key) is None for mandatory_key in mandatory_keys]):
         raise KeyError(f"Argument dictionary does not contain all keys necessary for {dict_type} object creation. "
                        f"Mandatory keys: {mandatory_keys}")

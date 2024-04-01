@@ -19,35 +19,35 @@ def template_example(database, path):
     # if the data exist, we will use the data from the transistor_loaded object
     # check if the data exist in the transistor_loaded object, if not load the data from the csv files
     
-    if not hasattr(transistor_loaded, 'c_iss'):
-        c_iss_normal = tdb.csv2array(f'{path}/transistor_c_iss.csv', first_x_to_0=True)
-        c_iss_detail = tdb.csv2array(f'{path}/transistor_c_iss_detail.csv', first_x_to_0=True)
-        c_iss_merged = tdb.merge_curve(c_iss_normal, c_iss_detail)
+    # if not hasattr(transistor_loaded, 'c_iss'):
+    c_iss_normal = tdb.csv2array(f'{path}/transistor_c_iss.csv', first_x_to_0=True)
+    c_iss_detail = tdb.csv2array(f'{path}/transistor_c_iss_detail.csv', first_x_to_0=True)
+    c_iss_merged = tdb.merge_curve(c_iss_normal, c_iss_detail)
 
-    else:
-        c_iss_merged = np.array([transistor_loaded.c_iss[0].graph_v_c[0]])
-        c_iss_merged = np.append(c_iss_merged, np.array([transistor_loaded.c_iss[0].graph_v_c[1]]), axis=0)
+    # else:
+    #     c_iss_merged = np.array([transistor_loaded.c_iss[0].graph_v_c[0]])
+    #     c_iss_merged = np.append(c_iss_merged, np.array([transistor_loaded.c_iss[0].graph_v_c[1]]), axis=0)
         
-    if not hasattr(transistor_loaded, 'c_oss'):
-        c_oss_normal = tdb.csv2array(f'{path}/transistor_c_oss.csv', first_x_to_0=True)
-        c_oss_detail = tdb.csv2array(f'{path}/transistor_c_oss_detail.csv', first_x_to_0=True)
-        c_oss_merged = tdb.merge_curve(c_oss_normal, c_oss_detail)
-    else:
-        c_oss_merged = np.array([transistor_loaded.c_oss[0].graph_v_c[0]])
-        c_oss_merged = np.append(c_oss_merged, np.array([transistor_loaded.c_oss[0].graph_v_c[1]]), axis=0)
+    # if not hasattr(transistor_loaded, 'c_oss'):
+    c_oss_normal = tdb.csv2array(f'{path}/transistor_c_oss.csv', first_x_to_0=True)
+    c_oss_detail = tdb.csv2array(f'{path}/transistor_c_oss_detail.csv', first_x_to_0=True)
+    c_oss_merged = tdb.merge_curve(c_oss_normal, c_oss_detail)
+    # else:
+    #     c_oss_merged = np.array([transistor_loaded.c_oss[0].graph_v_c[0]])
+    #     c_oss_merged = np.append(c_oss_merged, np.array([transistor_loaded.c_oss[0].graph_v_c[1]]), axis=0)
 
-    if not hasattr(transistor_loaded, 'c_rss'):
-        c_rss_normal = tdb.csv2array(f'{path}/transistor_c_rss.csv', first_x_to_0=True)
-        c_rss_detail = tdb.csv2array(f'{path}/transistor_c_rss_detail.csv', first_x_to_0=True)
-        c_rss_merged = tdb.merge_curve(c_rss_normal, c_rss_detail)
-    else:
-        c_rss_merged = np.array([transistor_loaded.c_rss[0].graph_v_c[0]])
-        c_rss_merged = np.append(c_rss_merged, np.array([transistor_loaded.c_rss[0].graph_v_c[1]]), axis=0)
+    # if not hasattr(transistor_loaded, 'c_rss'):
+    c_rss_normal = tdb.csv2array(f'{path}/transistor_c_rss.csv', first_x_to_0=True)
+    c_rss_detail = tdb.csv2array(f'{path}/transistor_c_rss_detail.csv', first_x_to_0=True)
+    c_rss_merged = tdb.merge_curve(c_rss_normal, c_rss_detail)
+    # else:
+    #     c_rss_merged = np.array([transistor_loaded.c_rss[0].graph_v_c[0]])
+    #     c_rss_merged = np.append(c_rss_merged, np.array([transistor_loaded.c_rss[0].graph_v_c[1]]), axis=0)
 
-    if not hasattr(transistor_loaded, 'graph_v_ecoss'):
-        v_ecoss = tdb.csv2array(f'{path}/transistor_V_Eoss.csv')
-    else:
-        v_ecoss = transistor_loaded.graph_v_ecoss
+    # if not hasattr(transistor_loaded, 'graph_v_ecoss'):
+    v_ecoss = tdb.csv2array(f'{path}/transistor_V_Eoss.csv')
+    # else:
+    #     v_ecoss = transistor_loaded.graph_v_ecoss
 
     # Create argument dictionaries
     transistor_args = {'name': 'CREE_C3M0016120K',
@@ -90,19 +90,22 @@ def template_example(database, path):
     # Channel parameters, Ids current is in A, Vgs voltage is in V and Tj temperature is in degree Celsius
     # First we will check if the data exist in the transistor_loaded object and load them into a dictionary
     channel = {}
-    if hasattr(transistor_loaded.switch, 'channel'):
-        for i in range(len(transistor_loaded.switch.channel)):
-            t_j = transistor_loaded.switch.channel[i].t_j
-            v_g = transistor_loaded.switch.channel[i].v_g
-            channel[f"channel_{t_j}_{v_g}"] = {"t_j": t_j, 'v_g': v_g, "graph_v_i": transistor_loaded.switch.channel[i].graph_v_i}
+    # if hasattr(transistor_loaded.switch, 'channel'):
+    #     for i in range(len(transistor_loaded.switch.channel)):
+    #         t_j = transistor_loaded.switch.channel[i].t_j
+    #         v_g = transistor_loaded.switch.channel[i].v_g
+    #         channel[f"channel_{t_j}_{v_g}"] = {"t_j": t_j, 'v_g': v_g, "graph_v_i": transistor_loaded.switch.channel[i].graph_v_i}
     # Now Let's look for files that start with switch_channel_ and end with .csv
     # note that the file name should be in the format switch_channel_tj_vg.csv where tj is the temperature in degree Celsius(if the votlage is negative it should be written as m40 instead of -40) and vg is the gate voltage in volt
     for file in os.listdir(path):
         if file.startswith("switch_channel_") and file.endswith(".csv"):
             legend_info = file.replace('switch_channel_', '').replace('.csv', '').split("_")
             legend_dict = tdb.get_legend_info(legend_info)
-            if f"channel_{t_j}_{v_g}" not in channel:
-                channel[f"channel_{t_j}_{v_g}"] = {**{key: value for key, value in legend_dict.items()}, 
+            name1 = int(legend_dict['t_j'])
+            name2 = int(legend_dict['v_g'])
+            name = f"channel_{name1}_{name2}"
+            if name not in channel:
+                channel[f"{name}"] = {**{key: value for key, value in legend_dict.items()}, 
                                                    "graph_v_i": tdb.csv2array(f'{path}/{file}', first_xy_to_00=True)}
 
     '''previous code
@@ -127,23 +130,23 @@ def template_example(database, path):
 
     # switching parameters
     e_on = {}
-    if hasattr(transistor_loaded.switch, 'e_on'):
-        for i in range(len(transistor_loaded.switch.e_on)):
-            legend_dict = {**{key: value for key, value in transistor_loaded.switch.e_on[i].__dict__.items()}}
-            if 't_j' in legend_dict and 'r_g' in legend_dict:
-                name1 = int(legend_dict['t_j'])
-                name2 = float(legend_dict['r_g'])
-            elif 't_j' in legend_dict and 'i_channel' in legend_dict:
-                name1 = int(legend_dict['t_j'])
-                name2 = int(legend_dict['i_channel'])
-            elif 'r_g' in legend_dict and 'i_channel' in legend_dict:
-                name1 = float(legend_dict['r_g'])
-                name2 = int(legend_dict['i_channel'])
-            name3 = int(legend_dict['v_supply'])
-            name4 = int(legend_dict['v_g'])
-            name = "eon_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
-            e_on[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
-                                               "graph_i_e": transistor_loaded.switch.e_on[i].graph_i_e}
+    # if hasattr(transistor_loaded.switch, 'e_on'):
+    #     for i in range(len(transistor_loaded.switch.e_on)):
+    #         legend_dict = {**{key: value for key, value in transistor_loaded.switch.e_on[i].__dict__.items()}}
+    #         if 't_j' in legend_dict and 'r_g' in legend_dict:
+    #             name1 = int(legend_dict['t_j'])
+    #             name2 = float(legend_dict['r_g'])
+    #         elif 't_j' in legend_dict and 'i_channel' in legend_dict:
+    #             name1 = int(legend_dict['t_j'])
+    #             name2 = int(legend_dict['i_channel'])
+    #         elif 'r_g' in legend_dict and 'i_channel' in legend_dict:
+    #             name1 = float(legend_dict['r_g'])
+    #             name2 = int(legend_dict['i_channel'])
+    #         name3 = int(legend_dict['v_supply'])
+    #         name4 = int(legend_dict['v_g'])
+    #         name = "eon_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
+    #         e_on[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
+    #                                            "graph_i_e": transistor_loaded.switch.e_on[i].graph_i_e}
     for file in os.listdir(path):
         if file.startswith("switch_switching_eon_") and file.endswith(".csv"):
             legend_info = file.replace('switch_switching_eon_', '').replace('.csv', '').split("_")
@@ -151,19 +154,21 @@ def template_example(database, path):
             if 't_j' in legend_dict and 'r_g' in legend_dict:
                 name1 = int(legend_dict['t_j'])
                 name2 = float(legend_dict['r_g'])
+                legend_dict['dataset_type'] = 'graph_i_e'
             elif 't_j' in legend_dict and 'i_channel' in legend_dict:
                 name1 = int(legend_dict['t_j'])
                 name2 = int(legend_dict['i_channel'])
+                legend_dict['dataset_type'] = 'graph_r_e'
             else:
                 name1 = float(legend_dict['r_g'])
                 name2 = int(legend_dict['i_channel'])
+                legend_dict['dataset_type'] = 'graph_t_e'
             name3 = int(legend_dict['v_supply'])
             name4 = int(legend_dict['v_g'])
             name = "eon_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
             if name not in e_on:
-                e_on[f"{name}"] = {"dataset_type": "graph_i_e",
-                                                                        **{key: value for key, value in legend_dict.items()},
-                                                                        "graph_i_e": tdb.csv2array(f'{path}/{file}')}
+                e_on[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
+                                    legend_dict['dataset_type']: tdb.csv2array(f'{path}/{file}')}
     ''' previous code
     e_on_25_600 = {"dataset_type": "graph_i_e",
                    "t_j": 25,
@@ -179,24 +184,24 @@ def template_example(database, path):
                    "graph_i_e": tdb.csv2array(f'{path}/switch_switching_eon_2.5Ohm_800V_25deg_15V.csv')}  # insert csv here
     '''
     e_off = {}
-    if hasattr(transistor_loaded.switch, 'e_off'):
-        for i in range(len(transistor_loaded.switch.e_off)):
-            legend_dict = {**{key: value for key, value in transistor_loaded.switch.e_off[i].__dict__.items()}
-                            }
-            if 't_j' in legend_dict and 'r_g' in legend_dict:
-                name1 = int(legend_dict['t_j'])
-                name2 = float(legend_dict['r_g'])
-            elif 't_j' in legend_dict and 'i_channel' in legend_dict:
-                name1 = int(legend_dict['t_j'])
-                name2 = int(legend_dict['i_channel'])
-            elif 'r_g' in legend_dict and 'i_channel' in legend_dict:
-                name1 = float(legend_dict['r_g'])
-                name2 = int(legend_dict['i_channel'])
-            name3 = int(legend_dict['v_supply'])
-            name4 = int(legend_dict['v_g'])
-            name = "eoff_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
-            e_off[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
-                                               "graph_i_e": transistor_loaded.switch.e_off[i].graph_i_e}
+    # if hasattr(transistor_loaded.switch, 'e_off'):
+    #     for i in range(len(transistor_loaded.switch.e_off)):
+    #         legend_dict = {**{key: value for key, value in transistor_loaded.switch.e_off[i].__dict__.items()}
+    #                         }
+    #         if 't_j' in legend_dict and 'r_g' in legend_dict:
+    #             name1 = int(legend_dict['t_j'])
+    #             name2 = float(legend_dict['r_g'])
+    #         elif 't_j' in legend_dict and 'i_channel' in legend_dict:
+    #             name1 = int(legend_dict['t_j'])
+    #             name2 = int(legend_dict['i_channel'])
+    #         elif 'r_g' in legend_dict and 'i_channel' in legend_dict:
+    #             name1 = float(legend_dict['r_g'])
+    #             name2 = int(legend_dict['i_channel'])
+    #         name3 = int(legend_dict['v_supply'])
+    #         name4 = int(legend_dict['v_g'])
+    #         name = "eoff_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
+    #         e_off[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
+    #                                            "graph_i_e": transistor_loaded.switch.e_off[i].graph_i_e}
     for file in os.listdir(path):
         if file.startswith("switch_switching_eoff_") and file.endswith(".csv"):
             legend_info = file.replace('switch_switching_eoff_', '').replace('.csv', '').split("_")
@@ -218,7 +223,7 @@ def template_example(database, path):
             name = "eoff_"+'_'.join([str(name1), str(name2), str(name3), str(name4)])
             if name not in e_off:
                 e_off[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
-                                        "graph_i_e": tdb.csv2array(f'{path}/{file}')}
+                                        legend_dict['dataset_type']: tdb.csv2array(f'{path}/{file}')}
     ''' previous code
     e_off_25_600 = {"dataset_type": "graph_i_e",
                     "t_j": 25,
@@ -234,18 +239,18 @@ def template_example(database, path):
                     "graph_i_e": tdb.csv2array(f'{path}/switch_switching_eoff_2.5Ohm_800V_25deg_-4V.csv')}  # insert csv here
     '''
     charge_curve = {}
-    if hasattr(transistor_loaded.switch, 'charge_curve'):
-        for i in range(len(transistor_loaded.switch.charge_curve)):
-            i_channel = transistor_loaded.switch.charge_curve[i].i_channel
-            t_j = transistor_loaded.switch.charge_curve[i].t_j
-            v_supply = transistor_loaded.switch.charge_curve[i].v_supply
-            i_g = transistor_loaded.switch.charge_curve[i].i_g
-            graph_q_v = transistor_loaded.switch.charge_curve[i].graph_q_v
-            charge_curve[f"charge_curve_{i_channel}_{t_j}_{v_supply}_{i_g}"] = {"i_channel": i_channel,
-                                                                                 "t_j": t_j,
-                                                                                 "v_supply": v_supply,
-                                                                                 "i_g": i_g,
-                                                                                 "graph_q_v": graph_q_v}
+    # if hasattr(transistor_loaded.switch, 'charge_curve'):
+    #     for i in range(len(transistor_loaded.switch.charge_curve)):
+    #         i_channel = transistor_loaded.switch.charge_curve[i].i_channel
+    #         t_j = transistor_loaded.switch.charge_curve[i].t_j
+    #         v_supply = transistor_loaded.switch.charge_curve[i].v_supply
+    #         i_g = transistor_loaded.switch.charge_curve[i].i_g
+    #         graph_q_v = transistor_loaded.switch.charge_curve[i].graph_q_v
+    #         charge_curve[f"charge_curve_{i_channel}_{t_j}_{v_supply}_{i_g}"] = {"i_channel": i_channel,
+    #                                                                              "t_j": t_j,
+    #                                                                              "v_supply": v_supply,
+    #                                                                              "i_g": i_g,
+    #                                                                              "graph_q_v": graph_q_v}
     for file in os.listdir(path):
         if file.endswith("gate_charge.csv"):
             # legend_info = file.replace('gate_charge.csv', '').split("_")
@@ -270,18 +275,18 @@ def template_example(database, path):
     }  # insert csv here
     '''
     ron_args = {}
-    if hasattr(transistor_loaded.switch, 'r_channel_th'):
-        for i in range(len(transistor_loaded.switch.r_channel_th)):
-            i_channel = transistor_loaded.switch.r_channel_th[i].i_channel
-            v_g = transistor_loaded.switch.r_channel_th[i].v_g
-            dataset_type = transistor_loaded.switch.r_channel_th[i].dataset_type
-            r_channel_nominal = transistor_loaded.switch.r_channel_th[i].r_channel_nominal
-            graph_t_r = transistor_loaded.switch.r_channel_th[i].graph_t_r
-            ron_args[f"ron_args_{i_channel}_{v_g}"] = {"i_channel": i_channel,
-                                                       "v_g": v_g,
-                                                       "dataset_type": dataset_type,
-                                                       "r_channel_nominal": r_channel_nominal,
-                                                       "graph_t_r": graph_t_r}
+    # if hasattr(transistor_loaded.switch, 'r_channel_th'):
+    #     for i in range(len(transistor_loaded.switch.r_channel_th)):
+    #         i_channel = transistor_loaded.switch.r_channel_th[i].i_channel
+    #         v_g = transistor_loaded.switch.r_channel_th[i].v_g
+    #         dataset_type = transistor_loaded.switch.r_channel_th[i].dataset_type
+    #         r_channel_nominal = transistor_loaded.switch.r_channel_th[i].r_channel_nominal
+    #         graph_t_r = transistor_loaded.switch.r_channel_th[i].graph_t_r
+    #         ron_args[f"ron_args_{i_channel}_{v_g}"] = {"i_channel": i_channel,
+    #                                                    "v_g": v_g,
+    #                                                    "dataset_type": dataset_type,
+    #                                                    "r_channel_nominal": r_channel_nominal,
+    #                                                    "graph_t_r": graph_t_r}
     for file in os.listdir(path):
         if file.startswith("switch_on_res_vg_") and file.endswith(".csv"):
             legend_info = file.replace('switch_on_res_vg_', '').replace('.csv', '').split("_")
@@ -329,20 +334,23 @@ def template_example(database, path):
     }
     # switch_foster_args = None
     soa = {}
-    if hasattr(transistor_loaded.switch, 'soa'):
-        for i in range(len(transistor_loaded.switch.soa)):
-            t_c = transistor_loaded.switch.soa[i].t_c
-            time_pulse = transistor_loaded.switch.soa[i].time_pulse
-            graph_i_v = transistor_loaded.switch.soa[i].graph_i_v
-            soa[f"soa_t_pulse_{time_pulse}"] = {'t_c': t_c, 'time_pulse': time_pulse, 'graph_i_v': graph_i_v}
+    # if hasattr(transistor_loaded.switch, 'soa'):
+    #     for i in range(len(transistor_loaded.switch.soa)):
+    #         t_c = transistor_loaded.switch.soa[i].t_c
+    #         time_pulse = transistor_loaded.switch.soa[i].time_pulse
+    #         graph_i_v = transistor_loaded.switch.soa[i].graph_i_v
+    #         soa[f"soa_t_pulse_{time_pulse}"] = {'t_c': t_c, 'time_pulse': time_pulse, 'graph_i_v': graph_i_v}
     for file in os.listdir(path):
         if file.startswith("soa_t_pulse_") and file.endswith(".csv"):
             legend_info = file.replace('soa_t_pulse_', '').replace('.csv','').split("_")
             legend_dict = tdb.get_legend_info(legend_info)
             legend_dict['t_c'] = 25
-            if f"soa_t_pulse_{time_pulse}" not in soa:
-                soa[f"soa_t_pulse_{time_pulse}"] = {**{key: value for key, value in legend_dict.items()},
-                                                    'graph_i_v': tdb.csv2array(f'{path}/{file}.csv')}
+            name1 = int(legend_dict['t_c'])
+            name2 = float(legend_dict['time_pulse'])
+            name = f"soa_{name1}_{name2}"
+            if name not in soa:
+                soa[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
+                                                    'graph_i_v': tdb.csv2array(f'{path}/{file}')}
     ''' previous code
     soa_t_pulse_100ms = {'t_c': 25, 'time_pulse': 100e-3, 'graph_i_v': tdb.csv2array(f'{path}/soa_t_pulse_100ms.csv')}
     soa_t_pulse_1ms = {'t_c': 25, 'time_pulse': 1e-3, 'graph_i_v': tdb.csv2array(f'{path}/soa_t_pulse_1ms.csv')}
@@ -373,29 +381,21 @@ def template_example(database, path):
 
     # Channel parameters
     channel = {}
-    if hasattr(transistor_loaded.diode, 'channel'):
-        for i in range(len(transistor_loaded.diode.channel)):
-            t_j = transistor_loaded.diode.channel[i].t_j
-            v_g = transistor_loaded.diode.channel[i].v_g
-            channel[f"channel_{t_j}_{v_g}"] = {"t_j": t_j, 'v_g': v_g, "graph_v_i": transistor_loaded.diode.channel[i].graph_v_i}
+    # if hasattr(transistor_loaded.diode, 'channel'):
+    #     for i in range(len(transistor_loaded.diode.channel)):
+    #         t_j = transistor_loaded.diode.channel[i].t_j
+    #         v_g = transistor_loaded.diode.channel[i].v_g
+    #         channel[f"channel_{t_j}_{v_g}"] = {"t_j": t_j, 'v_g': v_g, "graph_v_i": transistor_loaded.diode.channel[i].graph_v_i}
     for file in os.listdir(path):
         if file.startswith("diode_channel_") and file.endswith(".csv"):
             legend_info = file.replace('diode_channel_', '').replace('.csv', '').split("_")
-            # previously there was not any information about the degree in the legend_info
-            # here we check if the degree is in the legend_info and if not we add it
-            for i in range(len(legend_info)):
-                if 'deg' not in legend_info[i]:
-                    old_format = True
-                else:
-                    old_format = False
-            if old_format:
-                legend_info[0] = f"{legend_info[0]}deg"
             legend_dict = tdb.get_legend_info(legend_info)
-            # t_j = int(tdb.temp_to_numeric(file.split("_")[2]))
-            # v_g = int(tdb.volt_to_numeric(file.split("_")[3].split("vgs")[0]))
-            if f"channel_{t_j}_{v_g}" not in channel:
-                channel[f"channel_{t_j}_{v_g}"] = {**{key: value for key, value in legend_dict.items()},
-                                                 "graph_v_i": tdb.csv2array(f'{path}/{file}', first_xy_to_00=True)}
+            name1 = int(legend_dict['t_j'])
+            name2 = int(legend_dict['v_g'])
+            name = f"channel_{name1}_{name2}"
+            if name not in channel:
+                channel[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
+                                                 "graph_v_i": tdb.csv2array(f'{path}/{file}', first_xy_to_00=True, mirror_xy_data=True)}
 
     ''' previous code
     channel_25_0 = {"t_j": 25,
@@ -452,7 +452,7 @@ if __name__ == '__main__':
 
     # update the database
     # db.update_from_fileexchange(True)
-    transistor_loaded = db.load_transistor('CREE_C3M0016120K')
+    # transistor_loaded = db.load_transistor('CREE_C3M0016120K')
 
     transistor = template_example(db, path)
     # Now save this transistor to the database local folder
