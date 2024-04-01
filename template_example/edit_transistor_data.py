@@ -99,14 +99,11 @@ def template_example(database, path):
     # note that the file name should be in the format switch_channel_tj_vg.csv where tj is the temperature in degree Celsius(if the votlage is negative it should be written as m40 instead of -40) and vg is the gate voltage in volt
     for file in os.listdir(path):
         if file.startswith("switch_channel_") and file.endswith(".csv"):
-            file = file.split(".csv")[0]
-            t_j = int(tdb.temp_to_numeric(file.split("_")[2]))
-            if t_j == 0:
-                t_j = 25
-            v_g = int(tdb.volt_to_numeric(file.split("_")[3]))
-            # check if the data exist in the transistor_loaded object, if not load the data from the csv files
+            legend_info = file.replace('switch_channel_', '').replace('.csv', '').split("_")
+            legend_dict = tdb.get_legend_info(legend_info)
             if f"channel_{t_j}_{v_g}" not in channel:
-                channel[f"channel_{t_j}_{v_g}"] = {"t_j": t_j, 'v_g': v_g, "graph_v_i": tdb.csv2array(f'{path}/{file}.csv', first_xy_to_00=True)}
+                channel[f"channel_{t_j}_{v_g}"] = {**{key: value for key, value in legend_dict.items()}, 
+                                                   "graph_v_i": tdb.csv2array(f'{path}/{file}', first_xy_to_00=True)}
 
     '''previous code
     channel_m40_15 = {"t_j": -40, 'v_g': 15, "graph_v_i": tdb.csv2array(f'{path}/switch_channel_m40_15V.csv', first_xy_to_00=True)}  # insert csv here
@@ -144,18 +141,16 @@ def template_example(database, path):
                                                     "graph_i_e": transistor_loaded.switch.e_on[i].graph_i_e}
     for file in os.listdir(path):
         if file.startswith("switch_switching_eon_") and file.endswith(".csv"):
-            file = file.split(".csv")[0]
-            r_g = tdb.res_to_numeric(file.split("_")[3])
-            v_supply = int(tdb.volt_to_numeric(file.split("_")[4]))
-            t_j = int(tdb.temp_to_numeric(file.split("_")[5]))
-            v_g = int(tdb.volt_to_numeric(file.split("_")[6]))
+            legend_info = file.replace('switch_switching_eon_', '').replace('.csv', '').split("_")
+            legend_dict = tdb.get_legend_info(legend_info)
+            # r_g = tdb.res_to_numeric(file.split("_")[3])
+            # v_supply = int(tdb.volt_to_numeric(file.split("_")[4]))
+            # t_j = int(tdb.temp_to_numeric(file.split("_")[5]))
+            # v_g = int(tdb.volt_to_numeric(file.split("_")[6]))
             if f"e_on_{t_j}_{v_supply}" not in e_on:
-                e_on[f"e_on_{t_j}_{v_supply}"] = {"dataset_type": "graph_i_e",
-                                                      "t_j": t_j,
-                                                      'v_g': v_g,
-                                                      'v_supply': v_supply,
-                                                      'r_g': r_g,
-                                                      "graph_i_e": tdb.csv2array(f'{path}/{file}.csv')}
+                e_on[f"e_on_{legend_dict['t_j']}_{legend_dict['v_supply']}"] = {"dataset_type": "graph_i_e",
+                                                                        **{key: value for key, value in legend_dict.items()},
+                                                                        "graph_i_e": tdb.csv2array(f'{path}/{file}')}
     ''' previous code
     e_on_25_600 = {"dataset_type": "graph_i_e",
                    "t_j": 25,
@@ -185,18 +180,12 @@ def template_example(database, path):
                                                  "graph_i_e": transistor_loaded.switch.e_off[i].graph_i_e}
     for file in os.listdir(path):
         if file.startswith("switch_switching_eoff_") and file.endswith(".csv"):
-            file = file.split(".csv")[0]
-            r_g = tdb.res_to_numeric(file.split("_")[3])
-            v_supply = int(tdb.volt_to_numeric(file.split("_")[4]))
-            t_j = int(tdb.temp_to_numeric(file.split("_")[5]))
-            v_g = int(tdb.volt_to_numeric(file.split("_")[6]))
+            legend_info = file.replace('switch_switching_eoff_', '').replace('.csv', '').split("_")
+            legend_dict = tdb.get_legend_info(legend_info)
             if f"e_off_{t_j}_{v_supply}" not in e_off:
                 e_off[f"e_off_{t_j}_{v_supply}"] = {"dataset_type": "graph_i_e",
-                                                    "t_j": t_j,
-                                                    'v_g': v_g,
-                                                    'v_supply': v_supply,
-                                                    'r_g': r_g,
-                                                    "graph_i_e": tdb.csv2array(f'{path}/{file}.csv')}
+                                                    **{key: value for key, value in legend_dict.items()},
+                                                    "graph_i_e": tdb.csv2array(f'{path}/{file}')}
     ''' previous code
     e_off_25_600 = {"dataset_type": "graph_i_e",
                     "t_j": 25,
@@ -226,7 +215,8 @@ def template_example(database, path):
                                                                                  "graph_q_v": graph_q_v}
     for file in os.listdir(path):
         if file.endswith("gate_charge.csv"):
-            file = file.split(".csv")[0]
+            # legend_info = file.replace('gate_charge.csv', '').split("_")
+            # legend_dict = tdb.get_legend_info(legend_info)
             i_channel = 20
             t_j = 25
             v_supply = 800
@@ -236,7 +226,7 @@ def template_example(database, path):
                                                                                      "t_j": t_j,
                                                                                      "v_supply": v_supply,
                                                                                      "i_g": i_g,
-                                                                                     "graph_q_v": tdb.csv2array(f'{path}/{file}.csv', first_x_to_0=True)}
+                                                                                     "graph_q_v": tdb.csv2array(f'{path}/{file}', first_x_to_0=True)}
     ''' previous code  
     switch_gate_charge_curve_800 = {
         'i_channel': 20,
@@ -261,17 +251,15 @@ def template_example(database, path):
                                                        "graph_t_r": graph_t_r}
     for file in os.listdir(path):
         if file.startswith("switch_on_res_vg_") and file.endswith(".csv"):
-            file = file.split(".csv")[0]
-            v_g = int(tdb.volt_to_numeric(file.split("_")[4]))
-            i_channel = 75
+            legend_info = file.replace('switch_on_res_vg_', '').replace('.csv', '').split("_")
+            legend_dict = tdb.get_legend_info(legend_info)
             dataset_type = "t_r"
             r_channel_nominal = 16e-3
             if f"ron_args_{i_channel}_{v_g}" not in ron_args:
-                ron_args[f"ron_args_{i_channel}_{v_g}"] = {"i_channel": i_channel,
-                                                         "v_g": v_g,
+                ron_args[f"ron_args_{i_channel}_{v_g}"] = {**{key: value for key, value in legend_dict.items()},
                                                          "dataset_type": dataset_type,
                                                          "r_channel_nominal": r_channel_nominal,
-                                                         "graph_t_r": tdb.csv2array(f'{path}/{file}.csv')}
+                                                         "graph_t_r": tdb.csv2array(f'{path}/{file}')}
     ''' previous code
     switch_ron_args_11 = {
         'i_channel': 75,
@@ -316,11 +304,12 @@ def template_example(database, path):
             soa[f"soa_t_pulse_{time_pulse}"] = {'t_c': t_c, 'time_pulse': time_pulse, 'graph_i_v': graph_i_v}
     for file in os.listdir(path):
         if file.startswith("soa_t_pulse_") and file.endswith(".csv"):
-            file = file.split(".csv")[0]
-            time_pulse = tdb.time_to_numeric(file.split("_")[3])
-            t_c = 25
+            legend_info = file.replace('soa_t_pulse_', '').replace('.csv','').split("_")
+            legend_dict = tdb.get_legend_info(legend_info)
+            legend_dict['t_c'] = 25
             if f"soa_t_pulse_{time_pulse}" not in soa:
-                soa[f"soa_t_pulse_{time_pulse}"] = {'t_c': t_c, 'time_pulse': time_pulse, 'graph_i_v': tdb.csv2array(f'{path}/{file}.csv')}
+                soa[f"soa_t_pulse_{time_pulse}"] = {**{key: value for key, value in legend_dict.items()},
+                                                    'graph_i_v': tdb.csv2array(f'{path}/{file}.csv')}
     ''' previous code
     soa_t_pulse_100ms = {'t_c': 25, 'time_pulse': 100e-3, 'graph_i_v': tdb.csv2array(f'{path}/soa_t_pulse_100ms.csv')}
     soa_t_pulse_1ms = {'t_c': 25, 'time_pulse': 1e-3, 'graph_i_v': tdb.csv2array(f'{path}/soa_t_pulse_1ms.csv')}
@@ -358,11 +347,22 @@ def template_example(database, path):
             channel[f"channel_{t_j}_{v_g}"] = {"t_j": t_j, 'v_g': v_g, "graph_v_i": transistor_loaded.diode.channel[i].graph_v_i}
     for file in os.listdir(path):
         if file.startswith("diode_channel_") and file.endswith(".csv"):
-            file = file.split(".csv")[0]
-            t_j = int(tdb.temp_to_numeric(file.split("_")[2]))
-            v_g = int(tdb.volt_to_numeric(file.split("_")[3].split("vgs")[0]))
+            legend_info = file.replace('diode_channel_', '').replace('.csv', '').split("_")
+            # previously there was not any information about the degree in the legend_info
+            # here we check if the degree is in the legend_info and if not we add it
+            for i in range(len(legend_info)):
+                if 'deg' not in legend_info[i]:
+                    old_format = True
+                else:
+                    old_format = False
+            if old_format:
+                legend_info[0] = f"{legend_info[0]}deg"
+            legend_dict = tdb.get_legend_info(legend_info)
+            # t_j = int(tdb.temp_to_numeric(file.split("_")[2]))
+            # v_g = int(tdb.volt_to_numeric(file.split("_")[3].split("vgs")[0]))
             if f"channel_{t_j}_{v_g}" not in channel:
-                channel[f"channel_{t_j}_{v_g}"] = {"t_j": t_j, 'v_g': v_g, "graph_v_i": tdb.csv2array(f'{path}/{file}.csv', first_xy_to_00=True)}
+                channel[f"channel_{t_j}_{v_g}"] = {**{key: value for key, value in legend_dict.items()},
+                                                 "graph_v_i": tdb.csv2array(f'{path}/{file}', first_xy_to_00=True)}
 
     ''' previous code
     channel_25_0 = {"t_j": 25,

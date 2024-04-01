@@ -923,3 +923,30 @@ def res_to_numeric(resistance_str: str) -> float:
     
     return resistance_str
 
+def get_legend_info(legend_info: list) -> dict:
+    """
+    Get a list that containts the legend information and convert it to a dictionary.
+
+    :param legend: list that contains the legend information
+    :type legend: list
+
+    :return: dictionary with the legend information
+    :rtype: dict
+    """        
+    ret_dict = {}
+    for i in range(len(legend_info)):
+        if 'VGS' in legend_info[i].upper() or 'V' in legend_info[i]:
+            V = int(volt_to_numeric(legend_info[i].upper().strip('GS')))
+            if V < 20:
+                ret_dict['v_g'] = V
+            else:
+                ret_dict['v_supply'] = V
+        elif 'Ohm' in legend_info[i]:
+            ret_dict['r_g'] = int(res_to_numeric(legend_info[i]))
+        elif 'deg' in legend_info[i]:
+            ret_dict['t_j'] = int(temp_to_numeric(legend_info[i]))
+        elif 'A' in legend_info[i]:
+            ret_dict['i_channel'] = int(current_to_numeric(legend_info[i]))
+        elif 's' in legend_info[i]:
+            ret_dict['time_pulse'] = time_to_numeric(legend_info[i])
+    return ret_dict
