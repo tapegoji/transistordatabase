@@ -8,6 +8,7 @@ build/
 dist/
 transistordatabase.egg-info/
 .eggs/
+.vscode/
 /.idea
 /template_example/template_trials.py
 transistordatabase/cloned_repo_TDB_File_Exchange

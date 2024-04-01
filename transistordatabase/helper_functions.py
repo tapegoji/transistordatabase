@@ -774,3 +774,151 @@ def get_img_raw_data(plot):
     encoded_img_data = base64.b64encode(buf.getvalue())
     plot.close()
     return encoded_img_data.decode('UTF-8')
+
+def time_to_numeric(time_str: str) -> float:
+    """
+    Convert time string to numeric value. exapmle: '1ns' -> 1e-9
+
+    :param time_str: time string in format ms, us, ns, ps and etc.
+    :type time_str: str
+
+    :return: time in seconds
+    :rtype: float
+    """
+
+    if time_str.endswith('ps'):
+        time_str = float(time_str[:-2]) * 1e-12
+    elif time_str.endswith('ns'):
+        time_str = float(time_str[:-2]) * 1e-9
+    elif time_str.endswith('us') or time_str.endswith('µs'):
+        time_str = float(time_str[:-2]) * 1e-6
+    elif time_str.endswith('ms'):
+        time_str = float(time_str[:-2]) * 1e-3
+    elif time_str.endswith('s'):
+        time_str = float(time_str[:-1])
+    else:
+        raise ValueError(f"Unknown time unit: {time_str}")
+    
+    return time_str
+
+def temp_to_numeric(temp_str: str) -> float:
+    """
+    Convert temperature string to numeric value. exapmle: '25°C' -> 25
+
+    :param temp_str: temperature string in format °C or °F
+    :type temp_str: str
+
+    :return: temperature in °C
+    :rtype: float
+    """
+    if temp_str.endswith('°C'):
+        temp_str = float(temp_str[:-2])
+    elif temp_str.endswith('deg'):
+        temp_str = float(temp_str[:-3])
+    elif temp_str.endswith('°F'):
+        temp_str =  (float(temp_str[:-2]) - 32) * 5 / 9
+    elif 'm' in temp_str:
+        temp_str =  -float(temp_str.strip('m')) * 1e-3
+    else:
+        temp_str = float(temp_str)
+    
+    return temp_str
+
+def volt_to_numeric(volt_str: str) -> float:
+    """
+    Convert voltage string to numeric value. exapmle: '12mV' -> 12e-3
+
+    :param volt_str: voltage string in format V
+    :type volt_str: str
+
+    :return: voltage in V
+    :rtype: float
+    """ 
+    if volt_str.endswith('pV'):
+            volt_str = float(re.sub(r'\D', '', volt_str)) * 1e-12
+    elif volt_str.endswith('nV'):
+        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e-9
+    elif volt_str.endswith('uV') or volt_str.endswith('µV'):
+        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e-6
+    elif volt_str.endswith('mV'):
+        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e-3
+    elif volt_str.endswith('kV'):
+        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e3
+    elif volt_str.endswith('MV'):
+        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e6
+    elif volt_str.endswith('GV'):
+        volt_str = float(re.sub(r'\D', '', volt_str)) * 1e9
+    elif volt_str.endswith('V'):
+        volt_str = float(re.sub(r'\D', '', volt_str))
+    elif re.sub(r'\D', '', volt_str) == volt_str:  # there is no unit
+        volt_str = float(volt_str)
+    else:
+        try:
+            volt_str = float(volt_str)
+        except:
+            raise ValueError(f"Unknown voltage unit: {volt_str}")
+    return volt_str   
+
+def current_to_numeric(current_str: str) -> float:
+    """
+    Convert current string to numeric value. exapmle: '12mA' -> 12e-3
+
+    :param current_str: current string in format A
+    :type current_str: str
+
+    :return: current in A
+    :rtype: float
+    """
+    if current_str.endswith('pA'):
+        current_str = float(current_str.strip('nA'))*1e-12
+    elif current_str.endswith('nA'):
+        current_str = float(current_str.strip('nA'))*1e-9
+    elif current_str.endswith('uA') or current_str.endswith('µA'):
+        current_str = float(current_str.strip('uA'))*1e-6
+    elif current_str.endswith('mA'):
+        current_str = float(current_str.strip('mA'))*1e-3
+    elif current_str.endswith('kA'):
+        current_str = float(current_str.strip('kA'))*1e3
+    elif current_str.endswith('MA'):
+        current_str = float(current_str.strip('MA'))*1e6
+    elif current_str.endswith('GA'):
+        current_str = float(current_str.strip('GA'))*1e9
+    elif current_str.endswith('A'):
+        current_str = float(current_str.strip('A'))
+    else:
+        raise ValueError(f"Unknown current unit: {current_str}")
+    
+    return current_str
+
+def res_to_numeric(resistance_str: str) -> float:
+    """
+    Convert resistance string to numeric value. exapmle: '12mΩ' -> 12e-3
+
+    :param resistance_str: resistance string in format Ω
+    :type resistance_str: str
+
+    :return: resistance in Ω
+    :rtype: float
+    """
+    if resistance_str.endswith('pΩ') or resistance_str.endswith('pOhm'):
+        # remvoe character and convert to float
+        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e-12 
+    elif resistance_str.endswith('nΩ') or resistance_str.endswith('nOhm'):
+        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e-9
+    elif resistance_str.endswith('uΩ') or resistance_str.endswith('µΩ') or resistance_str.endswith('uOhm') or resistance_str.endswith('µOhm'):
+        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e-6
+    elif resistance_str.endswith('mΩ') or resistance_str.endswith('mOhm'):
+        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e-3
+    elif resistance_str.endswith('kΩ') or resistance_str.endswith('kOhm'):
+        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e3
+    elif resistance_str.endswith('MΩ') or resistance_str.endswith('MOhm'):
+        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e6
+    elif resistance_str.endswith('GΩ') or resistance_str.endswith('GOhm'):
+        resistance_str = float(re.sub(r'\D', '', resistance_str)) * 1e9
+    elif resistance_str.endswith('Ω') or resistance_str.endswith('Ohm'):
+        resistance_str = float(re.sub(r'\D', '', resistance_str))
+    else:
+        raise ValueError(f"Unknown resistance unit: {resistance_str}")
+    
+    return resistance_str
+
