@@ -101,6 +101,8 @@ def template_example(database, path):
         if file.startswith("switch_channel_") and file.endswith(".csv"):
             file = file.split(".csv")[0]
             t_j = int(tdb.temp_to_numeric(file.split("_")[2]))
+            if t_j == 0:
+                t_j = 25
             v_g = int(tdb.volt_to_numeric(file.split("_")[3]))
             # check if the data exist in the transistor_loaded object, if not load the data from the csv files
             if f"channel_{t_j}_{v_g}" not in channel:
@@ -420,6 +422,9 @@ if __name__ == '__main__':
     transistor_loaded = db.load_transistor('CREE_C3M0016120K')
 
     transistor = template_example(db, path)
+    # Now save this transistor to the database local folder
+    db_path = os.path.join(os.getcwd(), 'database')
+    db.export_single_transistor_to_json(transistor, db_path)
 
     ####################################
     # Method examples

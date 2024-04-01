@@ -787,18 +787,19 @@ def time_to_numeric(time_str: str) -> float:
     """
 
     if time_str.endswith('ps'):
-        time_str = float(time_str[:-2]) * 1e-12
+        time_str = round(float(time_str[:-2]) * 1e-12, 10)
     elif time_str.endswith('ns'):
-        time_str = float(time_str[:-2]) * 1e-9
+        time_str = round(float(time_str[:-2]) * 1e-9, 10)
     elif time_str.endswith('us') or time_str.endswith('µs'):
-        time_str = float(time_str[:-2]) * 1e-6
+        time_str = round(float(time_str[:-2]) * 1e-6, 10)
     elif time_str.endswith('ms'):
-        time_str = float(time_str[:-2]) * 1e-3
+        time_str = round(float(time_str[:-2]) * 1e-3, 10)
     elif time_str.endswith('s'):
-        time_str = float(time_str[:-1])
+        time_str = round(float(time_str[:-1]), 10)
     else:
         raise ValueError(f"Unknown time unit: {time_str}")
     
+    # before returning it let's limit the digits 
     return time_str
 
 def temp_to_numeric(temp_str: str) -> float:
@@ -818,7 +819,7 @@ def temp_to_numeric(temp_str: str) -> float:
     elif temp_str.endswith('°F'):
         temp_str =  (float(temp_str[:-2]) - 32) * 5 / 9
     elif 'm' in temp_str:
-        temp_str =  -float(temp_str.strip('m')) * 1e-3
+        temp_str =  -float(temp_str.strip('m'))
     else:
         temp_str = float(temp_str)
     
