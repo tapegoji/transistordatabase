@@ -288,16 +288,20 @@ def template_example(database, path):
     #                                                    "r_channel_nominal": r_channel_nominal,
     #                                                    "graph_t_r": graph_t_r}
     for file in os.listdir(path):
-        if file.startswith("switch_on_res_vg_") and file.endswith(".csv"):
-            legend_info = file.replace('switch_on_res_vg_', '').replace('.csv', '').split("_")
+        if file.startswith("switch_on_res_") and file.endswith(".csv"):
+            legend_info = file.replace('switch_on_res_', '').replace('.csv', '').split("_")
             legend_dict = tdb.get_legend_info(legend_info)
             dataset_type = "t_r"
+            name1 = int(legend_dict['v_g'])
             r_channel_nominal = 16e-3
-            if f"ron_args_{i_channel}_{v_g}" not in ron_args:
-                ron_args[f"ron_args_{i_channel}_{v_g}"] = {**{key: value for key, value in legend_dict.items()},
-                                                         "dataset_type": dataset_type,
-                                                         "r_channel_nominal": r_channel_nominal,
-                                                         "graph_t_r": tdb.csv2array(f'{path}/{file}')}
+            i_channel = 75
+            name = name1
+            if name not in ron_args:
+                ron_args[f"{name}"] = {**{key: value for key, value in legend_dict.items()},
+                                                        "dataset_type": dataset_type,
+                                                        "i_channel": i_channel,
+                                                        "r_channel_nominal": r_channel_nominal,
+                                                        "graph_t_r": tdb.csv2array(f'{path}/{file}')}
     ''' previous code
     switch_ron_args_11 = {
         'i_channel': 75,
