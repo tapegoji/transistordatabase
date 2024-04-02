@@ -479,6 +479,8 @@ class DatabaseManager:
                 switch_args['e_on'][i]['graph_r_e'] = np.array(switch_args['e_on'][i]['graph_r_e'])
             elif switch_args['e_on'][i]['dataset_type'] == 'graph_i_e':
                 switch_args['e_on'][i]['graph_i_e'] = np.array(switch_args['e_on'][i]['graph_i_e'])
+            elif switch_args['e_on'][i]['dataset_type'] == 'graph_t_e':
+                switch_args['e_on'][i]['graph_t_e'] = np.array(switch_args['e_on'][i]['graph_t_e'])
         if 'e_on_meas' in switch_args:
             for i in range(len(switch_args['e_on_meas'])):
                 if switch_args['e_on_meas'][i]['dataset_type'] == 'graph_r_e':
@@ -490,6 +492,8 @@ class DatabaseManager:
                 switch_args['e_off'][i]['graph_r_e'] = np.array(switch_args['e_off'][i]['graph_r_e'])
             elif switch_args['e_off'][i]['dataset_type'] == 'graph_i_e':
                 switch_args['e_off'][i]['graph_i_e'] = np.array(switch_args['e_off'][i]['graph_i_e'])
+            elif switch_args['e_off'][i]['dataset_type'] == 'graph_t_e':
+                switch_args['e_off'][i]['graph_t_e'] = np.array(switch_args['e_off'][i]['graph_t_e'])
         if 'e_off_meas' in switch_args:
             for i in range(len(switch_args['e_off_meas'])):
                 if switch_args['e_off_meas'][i]['dataset_type'] == 'graph_r_e':
