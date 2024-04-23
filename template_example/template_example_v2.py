@@ -460,7 +460,7 @@ if __name__ == '__main__':
 
     transistor = template_example(db, path)
     # Now save this transistor to the database local folder
-    db_path = os.path.join(os.getcwd(), 'database')
+    db_path = os.path.join(os.getcwd(), 'transistordatabase/examples/tdb_example')
     db.export_single_transistor_to_json(transistor, db_path)
 
     ####################################
